@@ -69,7 +69,7 @@
                             @if (obj.StatusTypes == StatusType.Pending.ToString())
                             {
                                 <div class="btn-group" role="group">
-                                    <a asp-area="Users" asp-controller="User" asp-action="Approve" asp-route-data="@obj.Username"
+                                    <a asp-area="Admin" asp-controller="User" asp-action="Approve" asp-route-data="@obj.Username"
                            class="btn btn-primary"><i class="bi bi-person-fill-check"></i> Approve</a>
                                     <button id="btnAddReason" value="@obj.Username" class="btn btn-warning"><i class="bi bi-person-fill-x"></i> Reject</button>
                                 </div>
@@ -77,14 +77,14 @@
                             @if (obj.StatusTypes == StatusType.Approve.ToString())
                             {
                                 <div class="w-75 btn-group" role="group">
-                                    <a asp-area="Users" asp-controller="User" asp-action="Block" asp-route-data="@obj.Username"
+                                    <a asp-area="Admin" asp-controller="User" asp-action="Block" asp-route-data="@obj.Username"
                            class="btn btn-warning"><i class="bi bi-person-fill-lock"></i> Block</a>
                                 </div>
                             }
                             @if (obj.StatusTypes == StatusType.Block.ToString())
                             {
                                 <div class="w-75 btn-group" role="group">
-                                    <a asp-area="Users" asp-controller="User" asp-action="UnBlock" asp-route-data="@obj.Username"
+                                    <a asp-area="Admin" asp-controller="User" asp-action="UnBlock" asp-route-data="@obj.Username"
                            class="btn btn-outline-light"><i class="bi bi-person-fill-slash"></i> UnBlock</a>
                                 </div>
                             }

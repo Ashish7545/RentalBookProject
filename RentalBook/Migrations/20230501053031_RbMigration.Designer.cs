@@ -11,7 +11,7 @@ using RentalBook.Data;
 namespace RentalBook.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230430205622_RbMigration")]
+    [Migration("20230501053031_RbMigration")]
     partial class RbMigration
     {
         /// <inheritdoc />
@@ -50,28 +50,28 @@ namespace RentalBook.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "6c31a709-2f24-48c7-9e3a-c2d07d342124",
+                            Id = "098a68c8-5af0-4534-a952-fba2a5d16445",
                             ConcurrencyStamp = "1",
                             Name = "SuperAdmin",
                             NormalizedName = "SuperAdmin"
                         },
                         new
                         {
-                            Id = "ff3b57ae-5b49-4131-8ba1-0131c223fdd1",
+                            Id = "61a1af7d-fdb3-462b-8e2f-631661c9c32e",
                             ConcurrencyStamp = "2",
                             Name = "Admin",
                             NormalizedName = "Admin"
                         },
                         new
                         {
-                            Id = "01b0de35-c3ef-4acb-aaa3-97258b1ad96b",
+                            Id = "62e1c069-be20-4237-af93-eb7461ab3ade",
                             ConcurrencyStamp = "3",
                             Name = "Dealer",
                             NormalizedName = "Dealer"
                         },
                         new
                         {
-                            Id = "a4604594-59a7-4bbc-9750-15ba23d6dea6",
+                            Id = "debe93b1-17c0-4648-a56b-0c39c4a574c7",
                             ConcurrencyStamp = "4",
                             Name = "User",
                             NormalizedName = "User"

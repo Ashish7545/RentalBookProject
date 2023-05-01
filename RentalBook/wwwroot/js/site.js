@@ -4,7 +4,7 @@
 
 function AddReason(Reason) {
     $.ajax({
-        url: '/Users/User/Reject',
+        url: '/Admin/User/Reject',
         type: 'Post',
         data: { 'Username': $("#btnAddReason").val(), 'Reason': $("#Reason").val() },
         success: function (data) {

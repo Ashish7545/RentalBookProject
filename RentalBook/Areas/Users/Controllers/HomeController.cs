@@ -143,13 +143,13 @@ namespace RentalBook.Areas.Users.Controllers
                         {
                             if (userRoles.Contains("SuperAdmin"))
                             {
-                                return RedirectToAction("Dashboard", "User", new { area = "Users" });
+                                return RedirectToAction("Dashboard", "User", new { area = "Admin" });
                             }
                             else if (userRoles.Contains("Admin"))
                             {
                                 if (user.StatusTypes == StatusType.Approve)
                                 {
-                                    return RedirectToAction("Dashboard", "User", new { area = "Users" });
+                                    return RedirectToAction("Dashboard", "User", new { area = "Admin" });
                                 }
                                 else
                                 {
@@ -162,7 +162,7 @@ namespace RentalBook.Areas.Users.Controllers
                             {
                                 if (user.StatusTypes == StatusType.Approve)
                                 {
-                                    return RedirectToAction("Dashboard", "User", new { area = "Users" });
+                                    return RedirectToAction("Dashboard", "User", new { area = "Admin" });
                                 }
                                 else
                                 {

@@ -88,12 +88,12 @@
                         <td style="text-align: center">
                             @if (obj.IsActive == true)
                             {
-                                <a asp-area="Users" asp-controller="Product" asp-action="IsActive" asp-route-id="@obj.Id"
+                                <a asp-area="Admin" asp-controller="Product" asp-action="IsActive" asp-route-id="@obj.Id"
                        class="btn btn-success mx-2">Active</a>
                             }
                             else
                             {
-                                <a asp-area="Users" asp-controller="Product" asp-action="IsActive" asp-route-id="@obj.Id"
+                                <a asp-area="Admin" asp-controller="Product" asp-action="IsActive" asp-route-id="@obj.Id"
                        class="btn btn-warning mx-2">InActive</a>
                             }
 
@@ -103,13 +103,13 @@
                     {
                         <td style="text-align: center">
                             <div class="w-60 btn-group" role="group">
-                                <a asp-area="Users" asp-controller="Product" asp-action="Upsert" asp-route-id="@obj.Id"
+                                <a asp-area="Admin" asp-controller="Product" asp-action="Upsert" asp-route-id="@obj.Id"
                            class="btn btn-primary mx-2"><i class="bi bi-pencil-square"></i> Edit</a>
-                                <a onclick="Delete('/Users/Product/Delete/@obj.Id')"
+                                <a onclick="Delete('/Admin/Product/Delete/@obj.Id')"
                            class="btn btn-warning mx-2"><i class="bi bi-trash"></i> Delete</a>
-                                @* <a asp-area="Users" asp-controller="Product" asp-action="Delete" asp-route-id="@obj.Id"
+                                @* <a asp-area="Admin" asp-controller="Product" asp-action="Delete" asp-route-id="@obj.Id"
                         class="btn btn-danger mx-2"><i class="bi bi-trash"></i> Delete</a>*@
-                                <a asp-area="Users" asp-controller="Product" asp-action="Discount" asp-route-id="@obj.Id"
+                                <a asp-area="Admin" asp-controller="Product" asp-action="Discount" asp-route-id="@obj.Id"
                            class="btn btn-success mx-2"><i class="bi bi-patch-plus"></i> Add Discount</a>
                             </div>
                         </td>
@@ -178,7 +178,7 @@
                                 // Product deleted successfully, show success message
                                 Swal.fire("Deleted!", "Product Deleted Successfully!", "success");
                                 setTimeout(function () {
-                                    window.location.href = '/Users/Product/Index';
+                                    window.location.href = '/Admin/Product/Index';
                                 }, 1500);
                             } else {
                                 // Product deletion failed, show error message

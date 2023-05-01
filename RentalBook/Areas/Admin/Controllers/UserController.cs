@@ -78,14 +78,14 @@ namespace RentalBook.Areas.Users.Controllers
             {
                 if (HttpContext.Session.GetString("Role") == "Customer")
                 {
-                    return RedirectToAction("Index", "Home", new { area = "Customer" });
+                    return RedirectToAction("Index", "Home", new { area = "Users" });
                 }
                 return View("Dashboard");
             }
             else
             {
                 TempData["error"] = "Session ended! Login Again";
-                return RedirectToAction("Login", "Home", new { area = "Customer" });
+                return RedirectToAction("Login", "Home", new { area = "Users" });
             }
 
         }

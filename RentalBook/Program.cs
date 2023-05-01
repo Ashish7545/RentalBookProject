@@ -41,12 +41,12 @@ builder.Services.AddSession(option =>
 //builder.Services.ConfigureApplicationCookie(options =>
 //{
 //    // Set the login URL for handling unauthorized access
-//    options.LoginPath = $"/Customer/Home/Login";
-//    options.LogoutPath = $"/Customer/Home/Logout";
-//    options.AccessDeniedPath = $"/Customer/Home/Login";
+//    options.LoginPath = $"/Users/Home/Login";
+//    options.LogoutPath = $"/Users/Home/Logout";
+//    options.AccessDeniedPath = $"/Users/Home/Login";
 //    //options.Events.OnRedirectToLogin = context =>
 //    //{
-//    //    context.Response.Redirect("/Customer/Home/Login");
+//    //    context.Response.Redirect("/Users/Home/Login");
 //    //    return Task.CompletedTask;
 //    //};
 //});
@@ -66,11 +66,11 @@ builder.Services.AddAuthorization(options =>
 .ConfigureApplicationCookie(options =>
 {
     // Set the login URL for handling unauthorized access
-    options.LogoutPath = $"/Customer/Home/Logout";
-    options.AccessDeniedPath = $"/Customer/Home/Login";
+    options.LogoutPath = $"/Users/Home/Logout";
+    options.AccessDeniedPath = $"/Users/Home/Login";
     options.Events.OnRedirectToLogin = context =>
     {
-        context.Response.Redirect("/Customer/Home/Login");
+        context.Response.Redirect("/Users/Home/Login");
         return Task.CompletedTask;
     };
 });

@@ -47,7 +47,7 @@
                         <td>@obj.OrderTotal</td>
                         <td style="text-align: center">
                             <div class="w-75 btn-group" role="group">
-                                <a asp-area="Users" asp-controller="Order" asp-action="Detail" asp-route-orderId="@obj.Id"
+                                <a asp-area="Admin" asp-controller="Order" asp-action="Detail" asp-route-orderId="@obj.Id"
                            class="btn btn-primary mx-2"><i class="bi bi-pencil-square"></i> Edit</a>
                             </div>
                         </td>
@@ -65,7 +65,7 @@ else
                 <h5>Your have not Ordered anything yet!</h5>
                 <hr />
                 <div class="form-group mb-1">
-                    <a asp-area="Customer" asp-controller="Home" asp-action="Index" class="btn btn-light btn-sm">Continue Shopping</a>
+                    <a asp-area="Users" asp-controller="Home" asp-action="Index" class="btn btn-light btn-sm">Continue Shopping</a>
                 </div>
             </div>
         </div>

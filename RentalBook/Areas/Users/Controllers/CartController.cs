@@ -172,8 +172,8 @@ namespace RentalBook.Areas.Customer.Controllers
             {
                 LineItems = new List<SessionLineItemOptions>(),
                 Mode = "payment",
-                SuccessUrl = domain + $"Customer/Cart/OrderConfirmation?id={CartVM.OrderHeader.Id}",
-                CancelUrl = domain + $"Customer/Cart/Index",
+                SuccessUrl = domain + $"Users/Cart/OrderConfirmation?id={CartVM.OrderHeader.Id}",
+                CancelUrl = domain + $"Users/Cart/Index",
             };
             foreach (var item in CartVM.CartItem)
             {

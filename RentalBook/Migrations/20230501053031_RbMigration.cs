@@ -397,10 +397,10 @@ namespace RentalBook.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "01b0de35-c3ef-4acb-aaa3-97258b1ad96b", "3", "Dealer", "Dealer" },
-                    { "6c31a709-2f24-48c7-9e3a-c2d07d342124", "1", "SuperAdmin", "SuperAdmin" },
-                    { "a4604594-59a7-4bbc-9750-15ba23d6dea6", "4", "User", "User" },
-                    { "ff3b57ae-5b49-4131-8ba1-0131c223fdd1", "2", "Admin", "Admin" }
+                    { "098a68c8-5af0-4534-a952-fba2a5d16445", "1", "SuperAdmin", "SuperAdmin" },
+                    { "61a1af7d-fdb3-462b-8e2f-631661c9c32e", "2", "Admin", "Admin" },
+                    { "62e1c069-be20-4237-af93-eb7461ab3ade", "3", "Dealer", "Dealer" },
+                    { "debe93b1-17c0-4648-a56b-0c39c4a574c7", "4", "User", "User" }
                 });
 
             migrationBuilder.CreateIndex(
