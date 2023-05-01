@@ -60,18 +60,21 @@ namespace RentalBook.Areas.Users.Controllers
             return View(data);
         }
 
-        //public IActionResult Detail(int orderId) 
-        //{
-        //          var UId = HttpContext.Session.GetString("UserId");
-        //          OrderVM = new OrderVM()
-        //	{
-        //		OrderList = _db.OrderHeaders.Where(u => u.Id == orderId).ToList(),
-        //		OrderDetails = _db.OrderDetails.Where(u => u.Id == orderId).ToList(),
-        //		ApplicationUsers = _db.Users.Where(u => u.Id == UId).ToList(),
-        //		Products = _db.Products.Where(u => u.Id == orderId).ToList()
-        //	};
-        //	return View(OrderVM);
+        public IActionResult Detail(int orderId)
+        {
+            var UId = HttpContext.Session.GetString("UserId");
+            
+            OrderVM = new OrderVM()
+            {
+                OrderDetails = _db.OrderDetails.Where(u => u.OrderHeaderId == orderId).ToList(),
+                OrderHeader = _db.OrderHeaders.Where(a => a.Id == orderId).First(),
+                Product = new(),
+                ApplicationUser = _db.Users.Where(a => a.Id == UId).First()
+                
+            };
 
-        //      }
+			return View(OrderVM);
+
+        }
     }
 }

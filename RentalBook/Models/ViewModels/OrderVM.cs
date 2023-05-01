@@ -11,11 +11,10 @@ namespace RentalBook.Models.ViewModels
         public string Status { get; set; }
         public string PaymentStatus { get; set; }
         public double OrderTotal { get; set; }
-        public IEnumerable<OrderHeader> OrderList { get; set; }
         public IEnumerable<OrderDetail> OrderDetails { get; set; }
         public OrderHeader OrderHeader { get; set; }
-        public OrderDetail OrderDetail { get; set; }
-        public IEnumerable<ApplicationUser> ApplicationUsers { get; set; }
-        public IEnumerable<Product> Products { get; set; }
+        public Product Product { get; set; }
+        public ShoppingCart Cart { get; set; }
+        public ApplicationUser ApplicationUser { get; set; }
     }
 }

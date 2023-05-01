@@ -97,13 +97,13 @@
 										<h6 class="my-0">@item.Name</h6>
 										<small class="text-muted">Quantity: @item.Quantity</small>
 									</div>
-									<span class="text-muted">@((item.Price * item.Quantity).ToString("c")) </span>
+										<span class="text-muted">₹@((item.Price * item.Quantity).ToString("0.00")) </span>
 		                        </li>
 								}
 
 								<li class="list-group-item d-flex justify-content-between bg-light">
 									<small class="text-info">Total Amount</small>
-									<strong class="text-info">@ViewBag.OrderTotal.ToString("0.00")</strong>
+									<strong class="text-info">₹@ViewBag.OrderTotal.ToString("0.00")</strong>
 								</li>
 							</ul>
 						</div>

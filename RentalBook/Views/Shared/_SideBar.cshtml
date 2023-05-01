@@ -18,22 +18,27 @@
         @if (Context.Session.GetString("Role") == "SuperAdmin")
         {
             <li class="nav-item">
-                <a asp-area="Users" asp-controller="User" asp-action="Admin" class="nav-link text-secondary">
+                <a asp-area="Admin" asp-controller="User" asp-action="Admin" class="nav-link text-secondary">
                     <i class="bi bi-person-lines-fill"></i> &nbsp; Admin List
                 </a>
             </li>
             <li class="nav-item">
-                <a asp-area="Users" asp-controller="User" asp-action="Dealer" class="nav-link text-secondary">
+                <a asp-area="Admin" asp-controller="User" asp-action="Dealer" class="nav-link text-secondary">
                     <i class="bi bi-person-lines-fill"></i> &nbsp; Dealer List
                 </a>
             </li>
             <li class="nav-item">
-                <a asp-area="Users" asp-controller="Product" asp-action="Index" class="nav-link text-secondary">
-                    <i class="bi bi-bag-check-fill"></i> &nbsp; Product List
+                <a asp-area="Admin" asp-controller="Product" asp-action="Index" class="nav-link text-secondary">
+                    <i class="bi bi-list-ul"></i> &nbsp; Product List
                 </a>
             </li>
             <li class="nav-item">
-                <a asp-area="Users" asp-controller="Order" asp-action="Index" class="nav-link text-secondary">
+                <a asp-area="Admin" asp-controller="Category" asp-action="Index" class="nav-link text-secondary">
+                    <i class="bi bi-list-ul"></i> &nbsp; All Category
+                </a>
+            </li>
+            <li class="nav-item">
+                <a asp-area="Admin" asp-controller="Order" asp-action="Index" class="nav-link text-secondary">
                     <i class="bi bi-bag-check-fill"></i> &nbsp; Manage Order
                 </a>
             </li>
@@ -54,17 +59,17 @@
         @if (Context.Session.GetString("Role") == "Admin")
         {
             <li class="nav-item">
-                <a asp-area="Users" asp-controller="User" asp-action="Dealer" class="nav-link text-secondary">
+                <a asp-area="Admin" asp-controller="User" asp-action="Dealer" class="nav-link text-secondary">
                     <i class="bi bi-person-lines-fill"></i> &nbsp; Dealer List
                 </a>
             </li>
             <li class="nav-item">
-                <a asp-area="Users" asp-controller="Product" asp-action="Index" class="nav-link text-secondary" style="">
+                <a asp-area="Admin" asp-controller="Product" asp-action="Index" class="nav-link text-secondary" style="">
                     <i class="bi bi-bag-check-fill"></i> &nbsp; Product List
                 </a>
             </li>
             <li class="nav-item">
-                <a asp-area="Users" asp-controller="Order" asp-action="Index" class="nav-link text-secondary">
+                <a asp-area="Admin" asp-controller="Order" asp-action="Index" class="nav-link text-secondary">
                     <i class="bi bi-bag-check-fill"></i> &nbsp; Manage Order
                 </a>
             </li>
@@ -72,15 +77,15 @@
         @if (Context.Session.GetString("Role") == "Dealer")
         {
             <li class="nav-item">
-                <a asp-area="Users" asp-controller="Product" asp-action="Index" class="nav-link text-secondary">
+                <a asp-area="Admin" asp-controller="Product" asp-action="Index" class="nav-link text-secondary">
                     <i class="bi bi-bag-check-fill"></i> &nbsp; Product List
                 </a>
             </li>
         }
-        @if (Context.Session.GetString("Role") == "Customer")
+        @if (Context.Session.GetString("Role") == "User")
         {
             <li class="nav-item">
-                <a asp-area="Users" asp-controller="Order" asp-action="Index" class="nav-link text-secondary">
+                <a asp-area="Admin" asp-controller="Order" asp-action="Index" class="nav-link text-secondary">
                     <i class="bi bi-bag-check-fill"></i> &nbsp; Manage Order
                 </a>
             </li>

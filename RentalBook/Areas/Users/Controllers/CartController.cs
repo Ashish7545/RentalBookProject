@@ -167,7 +167,7 @@ namespace RentalBook.Areas.Customer.Controllers
 
 
             //Stripe Settings
-            var domain = "https://localhost:44374/";
+            var domain = "https://localhost:44321/";
             var options = new SessionCreateOptions
             {
                 LineItems = new List<SessionLineItemOptions>(),
@@ -225,6 +225,7 @@ namespace RentalBook.Areas.Customer.Controllers
             {
                 orderHeader.OrderStatus = SD.StatusApproved;
                 orderHeader.PaymentStatus = SD.PaymentStatusApproved;
+                orderHeader.PaymentDate= DateTime.Now;
 
                 _db.OrderHeaders.Update(orderHeader);
                 _db.SaveChanges();

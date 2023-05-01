@@ -28,7 +28,7 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarColor02">
                     <ul class="navbar-nav me-auto">
-                        @if (Context.Session.GetString("Role") != "Customer")
+                        @if (Context.Session.GetString("Role") != "User")
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-light" asp-area="Users" asp-controller="Home" asp-action="Index">Home</a>

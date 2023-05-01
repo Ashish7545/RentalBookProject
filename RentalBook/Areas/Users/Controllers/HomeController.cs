@@ -38,7 +38,7 @@ namespace RentalBook.Areas.Users.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            var productList = _db.Products.ToList();
+            var productList = _db.Products.Where(u => u.IsActive == true).ToList();
             return View(productList);
         }
 
@@ -238,7 +238,7 @@ namespace RentalBook.Areas.Users.Controllers
                         await _userManager.AddToRoleAsync(user, UserRoles.Dealer);
                     }
                 }
-                else if (model.Role == "Customer")
+                else if (model.Role == "User")
                 {
                     if (await _roleManager.RoleExistsAsync(UserRoles.Customer))
                     {
