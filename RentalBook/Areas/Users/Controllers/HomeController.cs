@@ -127,29 +127,32 @@ namespace RentalBook.Areas.Users.Controllers
                         var userRoles = _userManager.GetRolesAsync(user).Result.First();
 
                         //Add Session
-                        HttpContext.Session.SetString("Username", model.Username);
-                        HttpContext.Session.SetString("UserId", user.Id);
-                        HttpContext.Session.SetString("Role", userRoles);
-
-                        var cartQty = _db.ShoppingCarts.Where(u => u.UserId == user.Id).ToList();
+                       
+						var cartQty = _db.ShoppingCarts.Where(u => u.UserId == user.Id).ToList();
                         int qty = 0;
                         foreach (var item in cartQty)
                         {
                             qty += item.Quantity;
                         }
-                        HttpContext.Session.SetInt32("Quantity", qty);
+						HttpContext.Session.SetInt32("Quantity", qty);
 
-                        if (!string.IsNullOrEmpty(returnUrl))
+						if (!string.IsNullOrEmpty(returnUrl))
                         {
                             if (userRoles.Contains("SuperAdmin"))
                             {
-                                return RedirectToAction("Dashboard", "User", new { area = "Admin" });
+								HttpContext.Session.SetString("Username", model.Username);
+								HttpContext.Session.SetString("UserId", user.Id);
+								HttpContext.Session.SetString("Role", userRoles);
+								return RedirectToAction("Dashboard", "User", new { area = "Admin" });
                             }
                             else if (userRoles.Contains("Admin"))
                             {
                                 if (user.StatusTypes == StatusType.Approve)
                                 {
-                                    return RedirectToAction("Dashboard", "User", new { area = "Admin" });
+									HttpContext.Session.SetString("Username", model.Username);
+									HttpContext.Session.SetString("UserId", user.Id);
+									HttpContext.Session.SetString("Role", userRoles);
+									return RedirectToAction("Dashboard", "User", new { area = "Admin" });
                                 }
                                 else
                                 {
@@ -162,18 +165,24 @@ namespace RentalBook.Areas.Users.Controllers
                             {
                                 if (user.StatusTypes == StatusType.Approve)
                                 {
-                                    return RedirectToAction("Dashboard", "User", new { area = "Admin" });
+									HttpContext.Session.SetString("Username", model.Username);
+									HttpContext.Session.SetString("UserId", user.Id);
+									HttpContext.Session.SetString("Role", userRoles);
+									return RedirectToAction("Dashboard", "User", new { area = "Admin" });
                                 }
                                 else
                                 {
                                     await _signInManager.SignOutAsync();
                                     TempData["error"] = "Please wait for Approval Message. Your registration request is Pending!";
-                                    return View(model);
-                                }
+									return RedirectToAction("Index", "Home");
+								}
                             }
                             else
                             {
-                                return LocalRedirect(returnUrl);
+								HttpContext.Session.SetString("Username", model.Username);
+								HttpContext.Session.SetString("UserId", user.Id);
+								HttpContext.Session.SetString("Role", userRoles);
+								return LocalRedirect(returnUrl);
                             }
                         }
                         else

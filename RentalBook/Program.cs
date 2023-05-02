@@ -38,42 +38,34 @@ builder.Services.AddSession(option =>
 });
 
 //Authorization
-//builder.Services.ConfigureApplicationCookie(options =>
-//{
-//    // Set the login URL for handling unauthorized access
-//    options.LoginPath = $"/Users/Home/Login";
-//    options.LogoutPath = $"/Users/Home/Logout";
-//    options.AccessDeniedPath = $"/Users/Home/Login";
-//    //options.Events.OnRedirectToLogin = context =>
-//    //{
-//    //    context.Response.Redirect("/Users/Home/Login");
-//    //    return Task.CompletedTask;
-//    //};
-//});
-
-builder.Services.AddAuthorization(options =>
-{
-    options.DefaultPolicy = new AuthorizationPolicyBuilder()
-        .RequireAuthenticatedUser()
-        .Build();
-    options.AddPolicy("RequireAdminRole", policy =>
-        policy.RequireRole("Admin"));
-    options.AddPolicy("RequireDealerRole", policy =>
-        policy.RequireRole("Dealer"));
-    options.AddPolicy("RequireSuperAdminRole", policy =>
-        policy.RequireRole("SuperAdmin"));
-})
-.ConfigureApplicationCookie(options =>
+builder.Services.ConfigureApplicationCookie(options =>
 {
     // Set the login URL for handling unauthorized access
+    options.LoginPath = $"/Users/Home/Login";
     options.LogoutPath = $"/Users/Home/Logout";
     options.AccessDeniedPath = $"/Users/Home/Login";
-    options.Events.OnRedirectToLogin = context =>
-    {
-        context.Response.Redirect("/Users/Home/Login");
-        return Task.CompletedTask;
-    };
+    
 });
+
+//builder.Services.AddAuthorization(options =>
+//{
+//    options.DefaultPolicy = new AuthorizationPolicyBuilder()
+//        .RequireAuthenticatedUser()
+//        .Build();
+//    options.AddPolicy("RequireAdminRole", policy =>
+//        policy.RequireRole("Admin"));
+//    options.AddPolicy("RequireDealerRole", policy =>
+//        policy.RequireRole("Dealer"));
+//    options.AddPolicy("RequireSuperAdminRole", policy =>
+//        policy.RequireRole("SuperAdmin"));
+//})
+//.ConfigureApplicationCookie(options =>
+//{
+//	// Set the login URL for handling unauthorized access
+//	options.LoginPath = $"/Users/Home/Login";
+//    options.LogoutPath = $"/Users/Home/Logout";
+//    options.AccessDeniedPath = $"/Users/Home/Login";
+//});
 
 builder.Services.AddScoped<IEmailSender, EmailSender>();
 
