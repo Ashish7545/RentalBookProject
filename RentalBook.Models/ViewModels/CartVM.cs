@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using RentalBook.Models;
+using RentalBook.Models.Models;
 
 namespace RentalBook.Models.ViewModels
 {
-    public class CartVM
+	public class CartVM
     {
         public string Name { get; set; }
         public string Description { get; set; }

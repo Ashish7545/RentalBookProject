@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using RentalBook.Data;
-using RentalBook.Models;
+using RentalBook.DataAccess.Data;
 using RentalBook.Models.Authentication;
 using RentalBook.Models.EmailConfiguration;
+using RentalBook.Models.Models;
 using RentalBook.Models.ViewModels;
 
 namespace RentalBook.Areas.Admin.Controllers

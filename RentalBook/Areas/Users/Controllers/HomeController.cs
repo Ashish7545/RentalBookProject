@@ -2,10 +2,10 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using RentalBook.Data;
-using RentalBook.Models;
+using RentalBook.DataAccess.Data;
 using RentalBook.Models.Authentication;
 using RentalBook.Models.EmailConfiguration;
+using RentalBook.Models.Models;
 using RentalBook.Models.ViewModels;
 using System.Diagnostics;
 

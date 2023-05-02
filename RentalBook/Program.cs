@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using RentalBook.Data;
+using RentalBook.DataAccess.Data;
 using RentalBook.Models.Authentication;
 using RentalBook.Models.EmailConfiguration;
 using RentalBook.Models.ViewModels;

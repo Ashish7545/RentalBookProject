@@ -1,8 +1,9 @@
 ﻿using RentalBook.Models.Authentication;
+using RentalBook.Models.Models;
 
 namespace RentalBook.Models.ViewModels
 {
-    public class OrderVM
+	public class OrderVM
     {
         public int Id { get; set; }
         public string Name { get; set; }
