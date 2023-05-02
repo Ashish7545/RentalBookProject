@@ -20,6 +20,7 @@ body {
 .new-container {
     width: 80%;
     margin-left: 210px;
+    padding-top:50px;
 }
 
 .badge {

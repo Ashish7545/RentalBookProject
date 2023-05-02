@@ -4,6 +4,8 @@
     position: fixed;
     margin-left: -300px;
     transition: 0.5s;
+    margin-top:50px;
+    padding-top:10px;
 }
 
 .my-container {
