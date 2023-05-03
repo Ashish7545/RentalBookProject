@@ -76,7 +76,7 @@ namespace RentalBook.Areas.Admin.Controllers
 		{
 			if (User?.Identity?.IsAuthenticated == true)
 			{
-				if (HttpContext.Session.GetString("Role") == "Customer")
+				if (HttpContext.Session.GetString("Role") == "User")
 				{
 					return RedirectToAction("Index", "Home", new { area = "Users" });
 				}
@@ -251,9 +251,135 @@ namespace RentalBook.Areas.Admin.Controllers
 			return View(data);
 		}
 
+        // Librarian List (Approve, reject, Block..)
+        [Authorize(Roles = "SuperAdmin, Admin")]
+        public IActionResult Librarian(string? searchString, int pg = 1)
+        {
+            var temp = new List<UserVM>();
+            if (searchString == null)
+            {
+                temp = (from u in _db.Users
+                        join ur in _db.UserRoles on u.Id equals ur.UserId
+                        join r in _db.Roles on ur.RoleId equals r.Id
+                        where r.Name == "Librarian"
+                        select new UserVM
+                        {
+                            Id = u.Id,
+                            Username = u.UserName,
+                            Email = u.Email,
+                            PhoneNumber = u.PhoneNumber,
+                            Area = u.Area,
+                            City = u.City,
+                            State = u.State,
+                            PinCode = u.PinCode,
+                            StatusTypes = u.StatusTypes.ToString(),
+                            IsActive = u.IsActive,
+                            Role = r.Name,
+                            Reason = u.Reason,
+                        }).ToList();
+            }
+            else
+            {
+                ViewBag.SearchStr = searchString;
+                temp = (from u in _db.Users
+                        join ur in _db.UserRoles on u.Id equals ur.UserId
+                        join r in _db.Roles on ur.RoleId equals r.Id
+                        where u.UserName.ToLower().Contains(searchString.ToLower()) && r.Name == "Librarian"
+                        select new UserVM
+                        {
+                            Id = u.Id,
+                            Username = u.UserName,
+                            Email = u.Email,
+                            PhoneNumber = u.PhoneNumber,
+                            Area = u.Area,
+                            City = u.City,
+                            State = u.State,
+                            PinCode = u.PinCode,
+                            StatusTypes = u.StatusTypes.ToString(),
+                            IsActive = u.IsActive,
+                            Role = r.Name,
+                            Reason = u.Reason,
+                        }).ToList();
+            }
 
-		//Dealer or Admin Approval, Reject, Block, Unblock 
-		[Authorize(Roles = "SuperAdmin, Admin")]
+            //Paging
+            const int pageSize = 3;
+            if (pg < 1)
+                pg = 1;
+            int recsCount = temp.Count;
+            var pager = new Pager(recsCount, pg, pageSize);
+            int recSkip = (pg - 1) * pageSize;
+            var data = temp.Skip(recSkip).Take(pager.PageSize).ToList();
+            ViewBag.Pager = pager;
+            return View(data);
+        }
+
+        // Librarian List (Approve, reject, Block..)
+        [Authorize(Roles = "SuperAdmin, Admin")]
+        public IActionResult Student(string? searchString, int pg = 1)
+        {
+            var temp = new List<UserVM>();
+            if (searchString == null)
+            {
+                temp = (from u in _db.Users
+                        join ur in _db.UserRoles on u.Id equals ur.UserId
+                        join r in _db.Roles on ur.RoleId equals r.Id
+                        where r.Name == "Student"
+                        select new UserVM
+                        {
+                            Id = u.Id,
+                            Username = u.UserName,
+                            Email = u.Email,
+                            PhoneNumber = u.PhoneNumber,
+                            Area = u.Area,
+                            City = u.City,
+                            State = u.State,
+                            PinCode = u.PinCode,
+                            StatusTypes = u.StatusTypes.ToString(),
+                            IsActive = u.IsActive,
+                            Role = r.Name,
+                            Reason = u.Reason,
+                        }).ToList();
+            }
+            else
+            {
+                ViewBag.SearchStr = searchString;
+                temp = (from u in _db.Users
+                        join ur in _db.UserRoles on u.Id equals ur.UserId
+                        join r in _db.Roles on ur.RoleId equals r.Id
+                        where u.UserName.ToLower().Contains(searchString.ToLower()) && r.Name == "Student"
+                        select new UserVM
+                        {
+                            Id = u.Id,
+                            Username = u.UserName,
+                            Email = u.Email,
+                            PhoneNumber = u.PhoneNumber,
+                            Area = u.Area,
+                            City = u.City,
+                            State = u.State,
+                            PinCode = u.PinCode,
+                            StatusTypes = u.StatusTypes.ToString(),
+                            IsActive = u.IsActive,
+                            Role = r.Name,
+                            Reason = u.Reason,
+                        }).ToList();
+            }
+
+            //Paging
+            const int pageSize = 3;
+            if (pg < 1)
+                pg = 1;
+            int recsCount = temp.Count;
+            var pager = new Pager(recsCount, pg, pageSize);
+            int recSkip = (pg - 1) * pageSize;
+            var data = temp.Skip(recSkip).Take(pager.PageSize).ToList();
+            ViewBag.Pager = pager;
+            return View(data);
+        }
+
+
+        //Dealer or Admin Approval, Reject, Block, Unblock 
+        [Authorize(Roles = "SuperAdmin, Admin")]
 		public async Task<IActionResult> Approve(string data)
 		{
 			var status = await _userManager.FindByNameAsync(data);
@@ -274,9 +400,20 @@ namespace RentalBook.Areas.Admin.Controllers
 				TempData["success"] = "Admin Approved!";
 				return RedirectToAction("Admin", "User");
 			}
-			TempData["success"] = "Dealer Approved!";
-			return RedirectToAction("Dealer", "User");
-		}
+			else if(userRoles.Contains("Librarian"))
+			{
+                TempData["success"] = "Librarian Approved!";
+                return RedirectToAction("Librarian", "User");
+            }
+			else if(userRoles.Contains("Student"))
+			{
+                TempData["success"] = "Student Approved!";
+                return RedirectToAction("Student", "User");
+            }
+            TempData["success"] = "Dealer Approved!";
+            return RedirectToAction("Dealer", "User");
+
+        }
 		[HttpPost]
 		[Authorize(Roles = "SuperAdmin, Admin")]
 		public async Task<IActionResult> Reject(string Username, string Reason)
@@ -307,7 +444,17 @@ namespace RentalBook.Areas.Admin.Controllers
 				TempData["success"] = "Admin Rejected!";
 				return RedirectToAction("Admin", "User");
 			}
-			TempData["success"] = "Dealer Rejected!";
+            else if (userRoles.Contains("Librarian"))
+            {
+                TempData["success"] = "Librarian Approved!";
+                return RedirectToAction("Librarian", "User");
+            }
+            else if (userRoles.Contains("Student"))
+            {
+                TempData["success"] = "Student Approved!";
+                return RedirectToAction("Student", "User");
+            }
+            TempData["success"] = "Dealer Rejected!";
 			return RedirectToAction("Dealer", "User");
 		}
 
@@ -327,7 +474,17 @@ namespace RentalBook.Areas.Admin.Controllers
 				TempData["success"] = "Admin Blocked!";
 				return RedirectToAction("Admin", "User");
 			}
-			TempData["success"] = "Dealer Blocked!";
+            else if (userRoles.Contains("Librarian"))
+            {
+                TempData["success"] = "Librarian Approved!";
+                return RedirectToAction("Librarian", "User");
+            }
+            else if (userRoles.Contains("Student"))
+            {
+                TempData["success"] = "Student Approved!";
+                return RedirectToAction("Student", "User");
+            }
+            TempData["success"] = "Dealer Blocked!";
 			return RedirectToAction("Dealer", "User");
 		}
 
@@ -347,7 +504,17 @@ namespace RentalBook.Areas.Admin.Controllers
 				TempData["success"] = "Admin UnBlocked!";
 				return RedirectToAction("Admin", "User");
 			}
-			TempData["success"] = "Dealer UnBlocked!";
+            else if (userRoles.Contains("Librarian"))
+            {
+                TempData["success"] = "Librarian Approved!";
+                return RedirectToAction("Librarian", "User");
+            }
+            else if (userRoles.Contains("Student"))
+            {
+                TempData["success"] = "Student Approved!";
+                return RedirectToAction("Student", "User");
+            }
+            TempData["success"] = "Dealer UnBlocked!";
 			return RedirectToAction("Dealer", "User");
 		}
 

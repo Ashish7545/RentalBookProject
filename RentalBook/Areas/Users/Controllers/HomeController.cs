@@ -161,7 +161,7 @@ namespace RentalBook.Areas.Users.Controllers
                                     return View(model);
                                 }
                             }
-                            else if (userRoles.Contains("Dealer"))
+                            else if (userRoles.Contains("Librarian") || userRoles.Contains("Student") || userRoles.Contains("Dealer"))
                             {
                                 if (user.StatusTypes == StatusType.Approve)
                                 {
@@ -245,6 +245,20 @@ namespace RentalBook.Areas.Users.Controllers
                     if (await _roleManager.RoleExistsAsync(UserRoles.Dealer))
                     {
                         await _userManager.AddToRoleAsync(user, UserRoles.Dealer);
+                    }
+                }
+                else if (model.Role == "Librarian")
+                {
+                    if (await _roleManager.RoleExistsAsync(UserRoles.Librarian))
+                    {
+                        await _userManager.AddToRoleAsync(user, UserRoles.Librarian);
+                    }
+                }
+                else if (model.Role == "Student")
+                {
+                    if (await _roleManager.RoleExistsAsync(UserRoles.Student))
+                    {
+                        await _userManager.AddToRoleAsync(user, UserRoles.Student);
                     }
                 }
                 else if (model.Role == "User")

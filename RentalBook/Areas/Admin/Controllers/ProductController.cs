@@ -44,7 +44,7 @@ namespace RentalBook.Areas.Admin.Controllers
 														  u.Renter.ToLower().Contains(searchString.ToLower())).ToList();
 				}
 			}
-			else if (Role == "Dealer")
+			else if (Role == "Dealer" || Role == "Librarian" || Role == "Student")
 			{
 				if (searchString == null)
 				{
@@ -88,14 +88,14 @@ namespace RentalBook.Areas.Admin.Controllers
 		}
 
 		// Add or Edit product
-		[Authorize(Roles = UserRoles.Dealer)]
+		[Authorize(Roles = "Dealer, Librarian, Student")]
 		public IActionResult Upsert(int? id)
 		{
 			ProductVM productVM = new()
 			{
 				Products = new(),
 				UserId = HttpContext.Session.GetString("UserId"),
-				Dealer = HttpContext.Session.GetString("Username"),
+				UName = HttpContext.Session.GetString("Username"),
 				CategoryList = _db.Categories.ToList().Select(
 				i => new SelectListItem
 				{
@@ -107,21 +107,21 @@ namespace RentalBook.Areas.Admin.Controllers
 			{
 				//create product
 				ViewBag.UserId = productVM.UserId;
-				ViewBag.Dealer = productVM.Dealer;
+				ViewBag.UName = productVM.UName;
 				return View(productVM);
 			}
 			else
 			{
 				//update product
 				ViewBag.UserId = productVM.UserId;
-				ViewBag.Dealer = productVM.Dealer;
+				ViewBag.UName = productVM.UName;
 				productVM.Products = _db.Products.FirstOrDefault(u => u.Id == id);
 				return View(productVM);
 			}
 		}
 		[HttpPost]
 		[ValidateAntiForgeryToken] //prevents from cross-site forgery attack
-		[Authorize(Roles = UserRoles.Dealer)]
+		[Authorize(Roles = "Dealer, Librarian, Student")]
 		public IActionResult Upsert(ProductVM obj, IFormFile? file)
 		{
 
@@ -168,7 +168,7 @@ namespace RentalBook.Areas.Admin.Controllers
 
 
 		// Activate or Deactivate product
-		[Authorize(Roles = "SuperAdmin, Admin, Dealer")]
+		[Authorize(Roles = "SuperAdmin, Admin, Dealer, Librarian, Student")]
 		public IActionResult IsActive(int? id)
 		{
 			var product = _db.Products.Find(id);
@@ -188,7 +188,7 @@ namespace RentalBook.Areas.Admin.Controllers
 
 
 		// Add Discount for each product
-		[Authorize(Roles = UserRoles.Dealer)]
+		[Authorize(Roles = "Dealer, Librarian, Student")]
 		public IActionResult Discount(int? id)
 		{
 			ViewBag.ProductId = id;
@@ -201,7 +201,7 @@ namespace RentalBook.Areas.Admin.Controllers
 
 		}
 		[HttpPost]
-		[Authorize(Roles = UserRoles.Dealer)]
+		[Authorize(Roles = "Dealer, Librarian, Student")]
 		public IActionResult Discount(DiscountVM discountVM, DiscountModel dv)
 		{
 			var product = _db.Products.Find(discountVM.ProductId);
@@ -259,7 +259,7 @@ namespace RentalBook.Areas.Admin.Controllers
 		// Delete Products
 		#region API CALLS
 		[HttpDelete]
-		[Authorize(Roles = UserRoles.Dealer)]
+		[Authorize(Roles = "Dealer, Librarian, Student")]
 		public IActionResult Delete(int? id)
 		{
 			var obj = _db.Products.FirstOrDefault(u => u.Id == id);

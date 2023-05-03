@@ -7,7 +7,7 @@ namespace RentalBook.Models.ViewModels
 	public class ProductVM
     {
         public Product Products { get; set; }
-        public string? Dealer { get; set; }
+        public string? UName { get; set; }
         public string? UserId { get; set; }
 
         [ValidateNever]
