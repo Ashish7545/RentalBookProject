@@ -24,5 +24,8 @@ namespace RentalBook.Models.Models
 
 		[NotMapped]
 		public DiscountModel Discount { get; set; }
+
+		public int RentDuration { get; set; } = 1;
+
 	}
 }

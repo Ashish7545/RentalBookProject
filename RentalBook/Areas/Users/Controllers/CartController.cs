@@ -47,11 +47,12 @@ namespace RentalBook.Areas.Users.Controllers
 								UserId = s.UserId,
 								ProductId = s.ProductId,
 								Id = s.Id,
+								RentDuration = s.RentDuration,
 							}).ToList();
 			double P = 0;
 			foreach (var item in cartData)
 			{
-				double TP = item.Price * item.Quantity;
+				double TP = (item.Price * item.Quantity) * item.RentDuration;
 				P += TP;
 				ViewBag.OrderTotal = P;
 			}
@@ -61,10 +62,28 @@ namespace RentalBook.Areas.Users.Controllers
 		public IActionResult Plus(int cartId)
 		{
 			var cartItem = _db.ShoppingCarts.FirstOrDefault(u => u.Id == cartId);
+			var item = _db.Products.FirstOrDefault(p => p.Id == cartItem.ProductId);
 			cartItem.Quantity++;
-			_db.ShoppingCarts.Update(cartItem);
-			_db.SaveChanges();
-			return RedirectToAction(nameof(Index));
+			int itemAfter = cartItem.Quantity;
+			if (item.Quantity < itemAfter)
+			{
+				TempData["error"] = "Not enough item to add in your cart!";
+				return RedirectToAction(nameof(Index));
+			}
+			else
+			{
+				_db.ShoppingCarts.Update(cartItem);
+				_db.SaveChanges();
+
+				var cartQty = _db.ShoppingCarts.Where(u => u.UserId == HttpContext.Session.GetString("UserId")).ToList();
+				int qty = 0;
+				foreach (var obj in cartQty)
+				{
+					qty += obj.Quantity;
+				}
+				HttpContext.Session.SetInt32("Quantity", qty);
+				return RedirectToAction(nameof(Index));
+			}
 		}
 
 		public IActionResult Minus(int cartId)
@@ -80,6 +99,14 @@ namespace RentalBook.Areas.Users.Controllers
 				_db.ShoppingCarts.Update(cartItem);
 			}
 			_db.SaveChanges();
+
+			var cartQty = _db.ShoppingCarts.Where(u => u.UserId == HttpContext.Session.GetString("UserId")).ToList();
+			int qty = 0;
+			foreach (var item in cartQty)
+			{
+				qty += item.Quantity;
+			}
+			HttpContext.Session.SetInt32("Quantity", qty);
 			return RedirectToAction(nameof(Index));
 		}
 
@@ -87,6 +114,48 @@ namespace RentalBook.Areas.Users.Controllers
 		{
 			var cartItem = _db.ShoppingCarts.FirstOrDefault(u => u.Id == cartId);
 			_db.ShoppingCarts.Remove(cartItem);
+			_db.SaveChanges();
+
+			var cartQty = _db.ShoppingCarts.Where(u => u.UserId == HttpContext.Session.GetString("UserId")).ToList();
+			int qty = 0;
+			foreach (var item in cartQty)
+			{
+				qty += item.Quantity;
+			}
+			HttpContext.Session.SetInt32("Quantity", qty);
+			return RedirectToAction(nameof(Index));
+		}
+
+		public IActionResult RentPeriodPlus(int cartId)
+		{
+			var cartItem = _db.ShoppingCarts.FirstOrDefault(u => u.Id == cartId);
+			cartItem.RentDuration++;
+			if (cartItem.RentDuration > 6)
+			{
+				TempData["error"] = "Can not order for more then 6 month!";
+				return RedirectToAction(nameof(Index));
+			}
+			else
+			{
+				_db.ShoppingCarts.Update(cartItem);
+				_db.SaveChanges();
+				return RedirectToAction(nameof(Index));
+			}
+		}
+
+		public IActionResult RentPeriodMinus(int cartId)
+		{
+			var cartItem = _db.ShoppingCarts.FirstOrDefault(u => u.Id == cartId);
+			if (cartItem.RentDuration <= 1)
+			{
+				TempData["error"] = "Rent Period Can not be less then one month!";
+				return RedirectToAction(nameof(Index));
+			}
+			else
+			{
+				cartItem.RentDuration--;
+				_db.ShoppingCarts.Update(cartItem);
+			}
 			_db.SaveChanges();
 			return RedirectToAction(nameof(Index));
 		}
@@ -117,11 +186,12 @@ namespace RentalBook.Areas.Users.Controllers
 									Name = p.Title,
 									Price = s.Price,
 									Quantity = s.Quantity,
+									RentDuration = s.RentDuration,
 								}).ToList();
 			double P = 0;
 			foreach (var item in CartVM.CartItem)
 			{
-				double TP = item.Price * item.Quantity;
+				double TP = (item.Price * item.Quantity) * item.RentDuration;
 				P += TP;
 				ViewBag.OrderTotal = P;
 			}
@@ -130,7 +200,7 @@ namespace RentalBook.Areas.Users.Controllers
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public IActionResult SummaryPost()
+		public IActionResult SummaryPost(CartVM cv)
 		{
 			var UId = HttpContext.Session.GetString("UserId");
 
@@ -144,7 +214,7 @@ namespace RentalBook.Areas.Users.Controllers
 			double P = 0;
 			foreach (var item in CartVM.CartItem)
 			{
-				double TP = item.Price * item.Quantity;
+				double TP = (item.Price * item.Quantity) * item.RentDuration;
 				P += TP;
 				CartVM.OrderHeader.OrderTotal = P;
 			}
@@ -160,6 +230,7 @@ namespace RentalBook.Areas.Users.Controllers
 					OrderHeaderId = CartVM.OrderHeader.Id,
 					Price = item.Price,
 					Quantity = item.Quantity,
+					RentDuration = item.RentDuration
 				};
 				_db.OrderDetails.Add(orderDetail);
 				_db.SaveChanges();
@@ -190,7 +261,7 @@ namespace RentalBook.Areas.Users.Controllers
 				{
 					PriceData = new SessionLineItemPriceDataOptions
 					{
-						UnitAmount = (long)(item.Price * 100), //20.00 -> 2000
+						UnitAmount = (long)((item.Price * item.RentDuration) * 100), //20.00 -> 2000
 						Currency = "inr",
 						ProductData = new SessionLineItemPriceDataProductDataOptions
 						{
@@ -233,6 +304,14 @@ namespace RentalBook.Areas.Users.Controllers
 			List<ShoppingCart> cartList = _db.ShoppingCarts.Where(x => x.UserId == orderHeader.ApplicationUserId).ToList();
 			_db.ShoppingCarts.RemoveRange(cartList);
 			_db.SaveChanges();
+
+			var cartQty = _db.ShoppingCarts.Where(u => u.UserId == orderHeader.ApplicationUserId).ToList();
+			int qty = 0;
+			foreach (var item in cartQty)
+			{
+				qty += item.Quantity;
+			}
+			HttpContext.Session.SetInt32("Quantity", qty);
 			return View(id);
 		}
 	}

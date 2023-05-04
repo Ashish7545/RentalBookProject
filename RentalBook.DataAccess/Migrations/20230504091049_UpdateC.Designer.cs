@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RentalBook.DataAccess.Data;
 
@@ -10,9 +11,11 @@ using RentalBook.DataAccess.Data;
 namespace RentalBook.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230504091049_UpdateC")]
+    partial class UpdateC
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -47,28 +50,28 @@ namespace RentalBook.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "6a9828f7-b45e-46c6-a67e-c13c201f598f",
+                            Id = "62dd02e2-afd3-4093-ab1b-fac7b1974724",
                             ConcurrencyStamp = "1",
                             Name = "SuperAdmin",
                             NormalizedName = "SuperAdmin"
                         },
                         new
                         {
-                            Id = "2e696a31-654d-4345-9b6d-d8584730cf24",
+                            Id = "18f07cc1-fe95-4179-8ef3-c8c1519bff20",
                             ConcurrencyStamp = "2",
                             Name = "Admin",
                             NormalizedName = "Admin"
                         },
                         new
                         {
-                            Id = "f2c35a60-c673-4108-ae1d-6a7debd266a0",
+                            Id = "b621cfeb-1f68-410d-b0b8-3be8cbda4ea8",
                             ConcurrencyStamp = "3",
                             Name = "Dealer",
                             NormalizedName = "Dealer"
                         },
                         new
                         {
-                            Id = "896f629c-9878-4533-abb6-9f5c5fdfa81d",
+                            Id = "4622f749-257a-430a-823a-ef558abb9ca8",
                             ConcurrencyStamp = "4",
                             Name = "User",
                             NormalizedName = "User"

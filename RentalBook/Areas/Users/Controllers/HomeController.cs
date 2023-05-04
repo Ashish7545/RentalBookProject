@@ -126,7 +126,6 @@ namespace RentalBook.Areas.Users.Controllers
                         //Get Roles
                         var userRoles = _userManager.GetRolesAsync(user).Result.First();
 
-                        //Add Session
                        
 						var cartQty = _db.ShoppingCarts.Where(u => u.UserId == user.Id).ToList();
                         int qty = 0;

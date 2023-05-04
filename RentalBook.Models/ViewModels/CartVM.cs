@@ -26,6 +26,8 @@ namespace RentalBook.Models.ViewModels
         public OrderHeader OrderHeader { get; set; }
         public Product Product { get; set; }
         public ShoppingCart Cart { get; set; }
-    }
+
+		public int RentDuration { get; set; } = 1;
+	}
 }
 

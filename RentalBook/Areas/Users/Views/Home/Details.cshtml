@@ -22,7 +22,9 @@
                                 </div>
                                 <div class="mt-4 mb-3">
                                     <h5 class="text-uppercase text-primary fw-bold me-sm-2">@Model.Product.Title</h5>
-                                    <span class="text-uppercase text-muted" style="font-size:13px"><i class="bi bi-pen-fill"></i> @Model.Product.Author</span>
+                                    <span class="text-uppercase text-muted" style="font-size:13px"><i class="bi bi-pen-fill"></i> @Model.Product.Author &nbsp; &nbsp;</span>
+                                    <span class="text-uppercase text-muted" style="font-size:13px"><i class="bi bi-book-half"></i> @Model.Product.Publication &nbsp; &nbsp;</span>
+                                    <span class="text-uppercase text-muted" style="font-size:13px">ISBN - @Model.Product.ISBN</span>
                                     @if(Model.Product.DiscountAmt == null)
                                     {
                                         <div class="d-flex flex-row align-items-center">

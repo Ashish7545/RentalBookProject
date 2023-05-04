@@ -23,5 +23,7 @@ namespace RentalBook.Models.Models
 
 		public int Quantity { get; set; }
 		public double Price { get; set; }
-	}
+
+		public int RentDuration { get; set; } = 1; 
+    }
 }

@@ -22,19 +22,19 @@ namespace RentalBook.DataAccess.Data
 		protected override void OnModelCreating(ModelBuilder builder)
 		{
 			base.OnModelCreating(builder);
-			SeedRoles(builder);
+			//SeedRoles(builder);
 		}
-		private static void SeedRoles(ModelBuilder builder)
-		{
-			builder.Entity<IdentityRole>().HasData
-				(
-				new IdentityRole() { Name = "SuperAdmin", ConcurrencyStamp = "1", NormalizedName = "SuperAdmin" },
-				new IdentityRole() { Name = "Admin", ConcurrencyStamp = "2", NormalizedName = "Admin" },
-				new IdentityRole() { Name = "Dealer", ConcurrencyStamp = "3", NormalizedName = "Dealer" },
-				new IdentityRole() { Name = "User", ConcurrencyStamp = "4", NormalizedName = "User" }
+		//private static void SeedRoles(ModelBuilder builder)
+		//{
+		//	builder.Entity<IdentityRole>().HasData
+		//		(
+		//		new IdentityRole() { Name = "SuperAdmin", ConcurrencyStamp = "1", NormalizedName = "SuperAdmin" },
+		//		new IdentityRole() { Name = "Admin", ConcurrencyStamp = "2", NormalizedName = "Admin" },
+		//		new IdentityRole() { Name = "Dealer", ConcurrencyStamp = "3", NormalizedName = "Dealer" },
+		//		new IdentityRole() { Name = "User", ConcurrencyStamp = "4", NormalizedName = "User" }
 
-				);
-		}
+		//		);
+		//}
 
 
 		//https://www.techstrikers.com/Articles/custom-user-registration-and-login-page-with-entity-framework.php

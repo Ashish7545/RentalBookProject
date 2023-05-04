@@ -95,9 +95,11 @@
 								<li class="list-group-item d-flex justify-content-between">
 									<div>
 										<h6 class="my-0">@item.Name</h6>
-										<small class="text-muted">Quantity: @item.Quantity</small>
+										<small class="text-muted">Quantity: @item.Quantity</small><br />
+										<small class="text-muted">Rent Period: @item.RentDuration Months</small>
+											
 									</div>
-										<span class="text-muted">₹@((item.Price * item.Quantity).ToString("0.00")) </span>
+										<small class="text-muted">₹@(((item.Price * item.Quantity) * item.RentDuration).ToString("0.00")) </small>
 		                        </li>
 								}
 
