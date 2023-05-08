@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Org.BouncyCastle.Crypto;
 using RentalBook.DataAccess.Data;
 using RentalBook.Models.Authentication;
 using RentalBook.Models.EmailConfiguration;
@@ -44,6 +45,7 @@ namespace RentalBook.Areas.Users.Controllers
 
         public IActionResult Details(int productId)
         {
+            HttpContext.Session.SetString("ProductId", productId.ToString());
             ShoppingCart cartObj = new()
             {
                 Quantity = 1,
@@ -269,6 +271,33 @@ namespace RentalBook.Areas.Users.Controllers
                 }
                 return RedirectToAction("Login", "Home");
             }
+        }
+
+        public IActionResult ForgotPassword()
+        {          
+                return View();  
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordVM model)
+        {
+            var userExists = await _userManager.FindByEmailAsync(model.Email);
+            if (userExists == null)
+            {
+                TempData["error"] = "User Doesn't Exist! Enter Correct Email.";
+                return View(model);
+            }
+            ApplicationUser user = new ApplicationUser()
+            {
+                Email= model.Email,
+                PasswordHash = model.Password
+            };
+            
+            _db.Users.Update(user);
+            await _db.SaveChangesAsync();
+            TempData["success"] = "Password Updated Successfully!";
+            return RedirectToAction("Login");
         }
 
         //User Logout section
