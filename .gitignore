@@ -361,3 +361,6 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/RentalBook.DataAccess/Migrations/20230511171652_RentalBookMigration.cs
+/RentalBook.DataAccess/Migrations/20230511172203_Update1.cs
+/RentalBook.DataAccess/Migrations/AppDbContextModelSnapshot.cs
