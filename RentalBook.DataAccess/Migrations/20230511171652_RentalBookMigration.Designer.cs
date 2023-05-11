@@ -8,11 +8,11 @@ using RentalBook.DataAccess.Data;
 
 #nullable disable
 
-namespace RentalBook.Migrations
+namespace RentalBook.DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230511053629_UpdateSuperAdmin")]
-    partial class UpdateSuperAdmin
+    [Migration("20230511171652_RentalBookMigration")]
+    partial class RentalBookMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,7 +50,7 @@ namespace RentalBook.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "d8b44f70-7644-4244-b2cb-d8289356c761",
+                            Id = "4b3abd8e-0947-487e-81fa-058ec201aa6a",
                             ConcurrencyStamp = "1",
                             Name = "SuperAdmin",
                             NormalizedName = "SuperAdmin"

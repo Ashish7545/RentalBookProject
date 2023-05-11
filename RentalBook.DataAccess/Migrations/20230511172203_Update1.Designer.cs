@@ -8,11 +8,11 @@ using RentalBook.DataAccess.Data;
 
 #nullable disable
 
-namespace RentalBook.Migrations
+namespace RentalBook.DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230501053031_RbMigration")]
-    partial class RbMigration
+    [Migration("20230511172203_Update1")]
+    partial class Update1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,28 +50,28 @@ namespace RentalBook.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "098a68c8-5af0-4534-a952-fba2a5d16445",
+                            Id = "7495ee6f-fd1f-4c5a-b96f-c2b1a55da221",
                             ConcurrencyStamp = "1",
                             Name = "SuperAdmin",
                             NormalizedName = "SuperAdmin"
                         },
                         new
                         {
-                            Id = "61a1af7d-fdb3-462b-8e2f-631661c9c32e",
+                            Id = "a10f578b-d499-4a71-a331-4881d41c321d",
                             ConcurrencyStamp = "2",
                             Name = "Admin",
                             NormalizedName = "Admin"
                         },
                         new
                         {
-                            Id = "62e1c069-be20-4237-af93-eb7461ab3ade",
+                            Id = "19358701-6207-4da6-8ef4-51a9547acae7",
                             ConcurrencyStamp = "3",
                             Name = "Dealer",
                             NormalizedName = "Dealer"
                         },
                         new
                         {
-                            Id = "debe93b1-17c0-4648-a56b-0c39c4a574c7",
+                            Id = "a55d2767-707b-44e9-bb3e-038ba8355944",
                             ConcurrencyStamp = "4",
                             Name = "User",
                             NormalizedName = "User"
@@ -232,7 +232,6 @@ namespace RentalBook.Migrations
                         .HasColumnType("tinyint(1)");
 
                     b.Property<string>("PinCode")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("Reason")
@@ -266,7 +265,7 @@ namespace RentalBook.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("RentalBook.Models.Category", b =>
+            modelBuilder.Entity("RentalBook.Models.Models.Category", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -284,7 +283,7 @@ namespace RentalBook.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("RentalBook.Models.DiscountModel", b =>
+            modelBuilder.Entity("RentalBook.Models.Models.DiscountModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -311,7 +310,7 @@ namespace RentalBook.Migrations
                     b.ToTable("Discounts");
                 });
 
-            modelBuilder.Entity("RentalBook.Models.OrderDetail", b =>
+            modelBuilder.Entity("RentalBook.Models.Models.OrderDetail", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -329,6 +328,9 @@ namespace RentalBook.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
+                    b.Property<int>("RentDuration")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("OrderHeaderId");
@@ -338,7 +340,7 @@ namespace RentalBook.Migrations
                     b.ToTable("OrderDetails");
                 });
 
-            modelBuilder.Entity("RentalBook.Models.OrderHeader", b =>
+            modelBuilder.Entity("RentalBook.Models.Models.OrderHeader", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -412,7 +414,7 @@ namespace RentalBook.Migrations
                     b.ToTable("OrderHeaders");
                 });
 
-            modelBuilder.Entity("RentalBook.Models.Product", b =>
+            modelBuilder.Entity("RentalBook.Models.Models.Product", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -480,7 +482,7 @@ namespace RentalBook.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("RentalBook.Models.ShoppingCart", b =>
+            modelBuilder.Entity("RentalBook.Models.Models.ShoppingCart", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -493,6 +495,9 @@ namespace RentalBook.Migrations
                         .HasColumnType("int");
 
                     b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RentDuration")
                         .HasColumnType("int");
 
                     b.Property<string>("UserId")
@@ -559,15 +564,15 @@ namespace RentalBook.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("RentalBook.Models.OrderDetail", b =>
+            modelBuilder.Entity("RentalBook.Models.Models.OrderDetail", b =>
                 {
-                    b.HasOne("RentalBook.Models.OrderHeader", "OrderHeader")
+                    b.HasOne("RentalBook.Models.Models.OrderHeader", "OrderHeader")
                         .WithMany()
                         .HasForeignKey("OrderHeaderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("RentalBook.Models.Product", "Product")
+                    b.HasOne("RentalBook.Models.Models.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -578,7 +583,7 @@ namespace RentalBook.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("RentalBook.Models.OrderHeader", b =>
+            modelBuilder.Entity("RentalBook.Models.Models.OrderHeader", b =>
                 {
                     b.HasOne("RentalBook.Models.Authentication.ApplicationUser", "ApplicationUser")
                         .WithMany()
@@ -589,9 +594,9 @@ namespace RentalBook.Migrations
                     b.Navigation("ApplicationUser");
                 });
 
-            modelBuilder.Entity("RentalBook.Models.ShoppingCart", b =>
+            modelBuilder.Entity("RentalBook.Models.Models.ShoppingCart", b =>
                 {
-                    b.HasOne("RentalBook.Models.Product", "Product")
+                    b.HasOne("RentalBook.Models.Models.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)

@@ -28,10 +28,10 @@ namespace RentalBook.DataAccess.Data
 		{
 			builder.Entity<IdentityRole>().HasData
 				(
-				new IdentityRole() { Name = "SuperAdmin", ConcurrencyStamp = "1", NormalizedName = "SuperAdmin" }
-				//new IdentityRole() { Name = "Admin", ConcurrencyStamp = "2", NormalizedName = "Admin" },
-				//new IdentityRole() { Name = "Dealer", ConcurrencyStamp = "3", NormalizedName = "Dealer" },
-				//new IdentityRole() { Name = "User", ConcurrencyStamp = "4", NormalizedName = "User" }
+				new IdentityRole() { Name = "SuperAdmin", ConcurrencyStamp = "1", NormalizedName = "SuperAdmin" },
+				new IdentityRole() { Name = "Admin", ConcurrencyStamp = "2", NormalizedName = "Admin" },
+				new IdentityRole() { Name = "Dealer", ConcurrencyStamp = "3", NormalizedName = "Dealer" },
+				new IdentityRole() { Name = "User", ConcurrencyStamp = "4", NormalizedName = "User" }
 
 				);
 		}

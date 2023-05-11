@@ -82,7 +82,8 @@
                     }
                     <td>@obj.Quantity</td>
                     @if (Context.Session.GetString("Role") == "SuperAdmin" || Context.Session.GetString("Role") == "Admin" ||
-                   Context.Session.GetString("Role") == "Dealer")
+                   Context.Session.GetString("Role") == "Dealer" || Context.Session.GetString("Student") == "Student" ||
+                   Context.Session.GetString("Librarian") == "Librarian")
                     {
                         <td style="text-align: center">
                             @if (obj.IsActive == true)
@@ -98,7 +99,9 @@
 
                         </td>
                     }
-                    @if (Context.Session.GetString("Role") == "Dealer")
+                    @if (Context.Session.GetString("Role") == "Dealer" ||
+                   Context.Session.GetString("Student") == "Student" ||
+                   Context.Session.GetString("Librarian") == "Librarian")
                     {
                         <td style="text-align: center">
                             <div class="w-60 btn-group" role="group">
