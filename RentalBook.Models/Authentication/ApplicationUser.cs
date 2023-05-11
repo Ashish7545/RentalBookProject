@@ -9,7 +9,7 @@ namespace RentalBook.Models.Authentication
         public string? Area { get; set; }
         public string? City { get; set; }
         public string? State { get; set; }
-        public string PinCode { get; set; }
+        public string? PinCode { get; set; }
         public StatusType StatusTypes { get; set; }
         public bool IsActive { get; set; } = true;
 

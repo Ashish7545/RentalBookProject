@@ -55,18 +55,22 @@ namespace RentalBook.Areas.Admin.Controllers
 				UserName = model.Username,
 				PhoneNumber = model.PhoneNumber,
 			};
-			var result = await _userManager.CreateAsync(user, model.Password);
+            if (await _roleManager.RoleExistsAsync(UserRoles.Admin))
+            {
+				var result = await _userManager.CreateAsync(user, model.Password);
 			if (!result.Succeeded)
 			{
 				TempData["error"] = "User creation failed! Please check user details and try again!";
 				return View(model);
 			}
-			if (await _roleManager.RoleExistsAsync(UserRoles.Admin))
-			{
-				await _userManager.AddToRoleAsync(user, UserRoles.Admin);
-			}
-
-			return RedirectToAction("Dashboard", "User");
+                await _userManager.AddToRoleAsync(user, UserRoles.Admin);
+            }
+            else
+            {
+                TempData["error"] = "Role doesn't exist in the database! Please Add role.";
+                return View(model);
+            }
+			return RedirectToAction("Admin", "User");
 		}
 
 
@@ -141,40 +145,28 @@ namespace RentalBook.Areas.Admin.Controllers
 		public async Task<IActionResult> Admin(string? searchString, int pg = 1)
 		{
 			var temp = new List<UserVM>();
-			if (searchString == null)
+            temp = await _db.Users
+                .Join(_db.UserRoles, u => u.Id, ur => ur.UserId, (u, ur) => new { User = u, ur.RoleId })
+                .Join(_db.Roles, ur => ur.RoleId, r => r.Id, (ur, r) => new { ur.User, Role = r })
+                .Where(ur => ur.Role.Name == "Admin")
+                .Select(ur => new UserVM
+                {
+                    Username = ur.User.UserName,
+                    Email = ur.User.Email,
+                    PhoneNumber = ur.User.PhoneNumber,
+                    StatusTypes = ur.User.StatusTypes.ToString(),
+                    Reason = ur.User.Reason,
+                    IsActive = ur.User.IsActive,
+                    Role = ur.Role.Name
+                }).ToListAsync();
+            if (searchString == null)
 			{
-				temp = await _db.Users
-				.Join(_db.UserRoles, u => u.Id, ur => ur.UserId, (u, ur) => new { User = u, ur.RoleId })
-				.Join(_db.Roles, ur => ur.RoleId, r => r.Id, (ur, r) => new { ur.User, Role = r })
-				.Where(ur => ur.Role.Name == "Admin")
-				.Select(ur => new UserVM
-				{
-					Username = ur.User.UserName,
-					Email = ur.User.Email,
-					PhoneNumber = ur.User.PhoneNumber,
-					StatusTypes = ur.User.StatusTypes.ToString(),
-					Reason = ur.User.Reason,
-					IsActive = ur.User.IsActive,
-					Role = ur.Role.Name
-				}).ToListAsync();
+				temp = temp;
 			}
 			else
 			{
 				ViewBag.SearchStr = searchString;
-				temp = await _db.Users
-				.Join(_db.UserRoles, u => u.Id, ur => ur.UserId, (u, ur) => new { User = u, ur.RoleId })
-				.Join(_db.Roles, ur => ur.RoleId, r => r.Id, (ur, r) => new { ur.User, Role = r })
-				.Where(ur => ur.Role.Name == "Admin" && ur.User.UserName.ToLower().Contains(searchString.ToLower()))
-				.Select(ur => new UserVM
-				{
-					Username = ur.User.UserName,
-					Email = ur.User.Email,
-					PhoneNumber = ur.User.PhoneNumber,
-					StatusTypes = ur.User.StatusTypes.ToString(),
-					Reason = ur.User.Reason,
-					IsActive = ur.User.IsActive,
-					Role = ur.Role.Name
-				}).ToListAsync();
+				temp = temp.Where(u => u.Username.ToLower().Contains(searchString.ToLower())).ToList();
 			}
 			//Paging
 			const int pageSize = 2;
@@ -193,50 +185,34 @@ namespace RentalBook.Areas.Admin.Controllers
 		public IActionResult Dealer(string? searchString, int pg = 1)
 		{
 			var temp = new List<UserVM>();
-			if (searchString == null)
+            temp = (from u in _db.Users
+                    join ur in _db.UserRoles on u.Id equals ur.UserId
+                    join r in _db.Roles on ur.RoleId equals r.Id
+                    where r.Name == "Dealer"
+                    select new UserVM
+                    {
+                        Id = u.Id,
+                        Username = u.UserName,
+                        Email = u.Email,
+                        PhoneNumber = u.PhoneNumber,
+                        Area = u.Area,
+                        City = u.City,
+                        State = u.State,
+                        PinCode = u.PinCode,
+                        StatusTypes = u.StatusTypes.ToString(),
+                        IsActive = u.IsActive,
+                        Role = r.Name,
+                        Reason = u.Reason,
+                    }).ToList();
+
+            if (searchString == null)
 			{
-				temp = (from u in _db.Users
-						join ur in _db.UserRoles on u.Id equals ur.UserId
-						join r in _db.Roles on ur.RoleId equals r.Id
-						where r.Name == "Dealer"
-						select new UserVM
-						{
-							Id = u.Id,
-							Username = u.UserName,
-							Email = u.Email,
-							PhoneNumber = u.PhoneNumber,
-							Area = u.Area,
-							City = u.City,
-							State = u.State,
-							PinCode = u.PinCode,
-							StatusTypes = u.StatusTypes.ToString(),
-							IsActive = u.IsActive,
-							Role = r.Name,
-							Reason = u.Reason,
-						}).ToList();
+				temp = temp;
 			}
 			else
 			{
 				ViewBag.SearchStr = searchString;
-				temp = (from u in _db.Users
-						join ur in _db.UserRoles on u.Id equals ur.UserId
-						join r in _db.Roles on ur.RoleId equals r.Id
-						where u.UserName.ToLower().Contains(searchString.ToLower()) && r.Name == "Dealer"
-						select new UserVM
-						{
-							Id = u.Id,
-							Username = u.UserName,
-							Email = u.Email,
-							PhoneNumber = u.PhoneNumber,
-							Area = u.Area,
-							City = u.City,
-							State = u.State,
-							PinCode = u.PinCode,
-							StatusTypes = u.StatusTypes.ToString(),
-							IsActive = u.IsActive,
-							Role = r.Name,
-							Reason = u.Reason,
-						}).ToList();
+				temp = temp.Where(u => u.Username.ToLower().Contains(searchString.ToLower())).ToList();
 			}
 
 			//Paging
@@ -256,50 +232,34 @@ namespace RentalBook.Areas.Admin.Controllers
         public IActionResult Librarian(string? searchString, int pg = 1)
         {
             var temp = new List<UserVM>();
+            temp = (from u in _db.Users
+                    join ur in _db.UserRoles on u.Id equals ur.UserId
+                    join r in _db.Roles on ur.RoleId equals r.Id
+                    where r.Name == "Librarian"
+                    select new UserVM
+                    {
+                        Id = u.Id,
+                        Username = u.UserName,
+                        Email = u.Email,
+                        PhoneNumber = u.PhoneNumber,
+                        Area = u.Area,
+                        City = u.City,
+                        State = u.State,
+                        PinCode = u.PinCode,
+                        StatusTypes = u.StatusTypes.ToString(),
+                        IsActive = u.IsActive,
+                        Role = r.Name,
+                        Reason = u.Reason,
+                    }).ToList();
+
             if (searchString == null)
             {
-                temp = (from u in _db.Users
-                        join ur in _db.UserRoles on u.Id equals ur.UserId
-                        join r in _db.Roles on ur.RoleId equals r.Id
-                        where r.Name == "Librarian"
-                        select new UserVM
-                        {
-                            Id = u.Id,
-                            Username = u.UserName,
-                            Email = u.Email,
-                            PhoneNumber = u.PhoneNumber,
-                            Area = u.Area,
-                            City = u.City,
-                            State = u.State,
-                            PinCode = u.PinCode,
-                            StatusTypes = u.StatusTypes.ToString(),
-                            IsActive = u.IsActive,
-                            Role = r.Name,
-                            Reason = u.Reason,
-                        }).ToList();
+				temp = temp;
             }
             else
             {
                 ViewBag.SearchStr = searchString;
-                temp = (from u in _db.Users
-                        join ur in _db.UserRoles on u.Id equals ur.UserId
-                        join r in _db.Roles on ur.RoleId equals r.Id
-                        where u.UserName.ToLower().Contains(searchString.ToLower()) && r.Name == "Librarian"
-                        select new UserVM
-                        {
-                            Id = u.Id,
-                            Username = u.UserName,
-                            Email = u.Email,
-                            PhoneNumber = u.PhoneNumber,
-                            Area = u.Area,
-                            City = u.City,
-                            State = u.State,
-                            PinCode = u.PinCode,
-                            StatusTypes = u.StatusTypes.ToString(),
-                            IsActive = u.IsActive,
-                            Role = r.Name,
-                            Reason = u.Reason,
-                        }).ToList();
+                temp = temp.Where(u => u.Username.ToLower().Contains(searchString.ToLower())).ToList();
             }
 
             //Paging
@@ -319,50 +279,34 @@ namespace RentalBook.Areas.Admin.Controllers
         public IActionResult Student(string? searchString, int pg = 1)
         {
             var temp = new List<UserVM>();
+            temp = (from u in _db.Users
+                    join ur in _db.UserRoles on u.Id equals ur.UserId
+                    join r in _db.Roles on ur.RoleId equals r.Id
+                    where r.Name == "Student"
+                    select new UserVM
+                    {
+                        Id = u.Id,
+                        Username = u.UserName,
+                        Email = u.Email,
+                        PhoneNumber = u.PhoneNumber,
+                        Area = u.Area,
+                        City = u.City,
+                        State = u.State,
+                        PinCode = u.PinCode,
+                        StatusTypes = u.StatusTypes.ToString(),
+                        IsActive = u.IsActive,
+                        Role = r.Name,
+                        Reason = u.Reason,
+                    }).ToList();
+
             if (searchString == null)
             {
-                temp = (from u in _db.Users
-                        join ur in _db.UserRoles on u.Id equals ur.UserId
-                        join r in _db.Roles on ur.RoleId equals r.Id
-                        where r.Name == "Student"
-                        select new UserVM
-                        {
-                            Id = u.Id,
-                            Username = u.UserName,
-                            Email = u.Email,
-                            PhoneNumber = u.PhoneNumber,
-                            Area = u.Area,
-                            City = u.City,
-                            State = u.State,
-                            PinCode = u.PinCode,
-                            StatusTypes = u.StatusTypes.ToString(),
-                            IsActive = u.IsActive,
-                            Role = r.Name,
-                            Reason = u.Reason,
-                        }).ToList();
+				temp = temp;
             }
             else
             {
                 ViewBag.SearchStr = searchString;
-                temp = (from u in _db.Users
-                        join ur in _db.UserRoles on u.Id equals ur.UserId
-                        join r in _db.Roles on ur.RoleId equals r.Id
-                        where u.UserName.ToLower().Contains(searchString.ToLower()) && r.Name == "Student"
-                        select new UserVM
-                        {
-                            Id = u.Id,
-                            Username = u.UserName,
-                            Email = u.Email,
-                            PhoneNumber = u.PhoneNumber,
-                            Area = u.Area,
-                            City = u.City,
-                            State = u.State,
-                            PinCode = u.PinCode,
-                            StatusTypes = u.StatusTypes.ToString(),
-                            IsActive = u.IsActive,
-                            Role = r.Name,
-                            Reason = u.Reason,
-                        }).ToList();
+                temp = temp.Where(u => u.Username.ToLower().Contains(searchString.ToLower())).ToList();
             }
 
             //Paging

@@ -52,9 +52,14 @@
                     <i class="bi bi-bag-check-fill"></i> &nbsp; Manage Order
                 </a>
             </li>
-            <li class="nav-item dropdown">
+            <li class="nav-item">
+                <a asp-controller="User" asp-action="GetRole" class="nav-link text-secondary">
+                    <i class="bi bi-person-lines-fill"></i> &nbsp; RoleList
+                </a>
+            </li>
+            @*<li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
-               aria-haspopup="true" aria-expanded="false"><i class="bi bi-person-lines-fill"></i> &nbsp; RoleList</a>
+               aria-haspopup="true" aria-expanded="false"> &nbsp; RoleList</a>
                 <div class="dropdown-menu">
                     <a asp-controller="User" asp-action="GetRole" class="dropdown-item text-secondary">
                         <i class="bi bi-person-lines-fill"></i> &nbsp; Get Roles
@@ -63,7 +68,7 @@
                         <i class="bi bi-plus-circle"></i> &nbsp; Add Role
                     </a>
                 </div>
-            </li>
+            </li>*@
 
         }
         @if (Context.Session.GetString("Role") == "Admin")
