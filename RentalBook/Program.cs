@@ -12,9 +12,12 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+//var connectionStrings = builder.Configuration.GetConnectionString("DefaultConnection");
+//builder.Services.AddDbContext<AppDbContext>(options => options.UseMySql(connectionStrings,
+//    ServerVersion.AutoDetect(connectionStrings)));
+
 var connectionStrings = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<AppDbContext>(options => options.UseMySql(connectionStrings,
-    ServerVersion.AutoDetect(connectionStrings)));
+builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionStrings));
 
 //Stripe Payment
 builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
